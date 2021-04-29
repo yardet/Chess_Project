@@ -62,7 +62,7 @@ void main()
 
     chessPosList newList = { &node1, &node9 };
     display(&newList);
-    //freeList(&newList);
+    //freeList(&newList); there a problem
     Free_valid_moves(valid_moves);
 }
 
