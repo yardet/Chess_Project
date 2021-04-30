@@ -139,7 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ChessPos_Lists.c" />
     <ClCompile Include="Main.c" />
+    <ClCompile Include="TreeList.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ChessPos_Lists.h" />
+    <ClInclude Include="TreeList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
