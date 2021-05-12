@@ -5,90 +5,96 @@
 #include <stdbool.h>
 #define ALLOCATION_FAILURE -1
 #include "ChessPos_Lists.h"
+
+
 chessPosArray*** validKnightMoves()
 {
-    chessPosArray*** arr = (chessPosArray***)malloc(sizeof(chessPosArray**) * 8);
+    chessPosArray*** arr = (chessPosArray***)malloc(sizeof(chessPosArray**) *TABLE_SIZE);
     check_allocation(arr);
     int i, j;
     int count = 0;
-    for (i = 0; i < 8; i++)
+    int start_row = START_POSITION_ROW;/*row boundary location */
+    int start_col = START_POSITION_COL;/*col boundary location */
+    int size = TABLE_SIZE;
+    for (i = start_row; i < start_row + size; i++)
     {
-        arr[i] = (chessPosArray**)malloc(sizeof(chessPosArray*) * 8);
+        arr[i] = (chessPosArray**)malloc(sizeof(chessPosArray)*size+1);
         check_allocation(arr[i]);
-        for (j = 0; j < 8; j++)
+        for (j = start_col; j < start_col + size; j++)
         {
-            arr[i][j] = (chessPosArray*)malloc(sizeof(chessPosArray));
+            arr[i][j] = (chessPosArray*)malloc(sizeof(chessPosArray)+1);
             check_allocation(arr[i][j]);
-            arr[i][j]->positions = (chessPos*)malloc(sizeof(chessPos));
+            arr[i][j]->positions = (chessPos*)malloc(sizeof(chessPos)*8);
             check_allocation(arr[i][j]->positions);
-            if ((j + 1) <= 7 && (i - 2) >= 0)/*one right and two up*/
+            if ((j + 1) < size + start_col && (i - 2) >= start_row)/*one right and two up*/
             {
-                arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
+                //arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
                 arr[i][j]->positions[count][0] = (i - 2) + 'A';
                 arr[i][j]->positions[count][1] = (j + 1) + 1 + '0';
                 count++;
             }
-            if (j + 2 <= 7 && i - 1 >= 0)/*two right and one up*/
+            if (j + 2 < size + start_col && i - 1 >= start_row)/*two right and one up*/
             {
-                arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
+                //arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
                 arr[i][j]->positions[count][0] = (i - 1) + 'A';
                 arr[i][j]->positions[count][1] = (j + 2) + 1 + '0';
                 count++;
             }
-            if (j + 2 <= 7 && i + 1 <= 7)/*two right and one down*/
+            if (j + 2 < size + start_col && i + 1 < size + start_row)/*two right and one down*/
             {
-                arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
+                //arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
                 arr[i][j]->positions[count][0] = (i + 1) + 'A';
                 arr[i][j]->positions[count][1] = (j + 2) + 1 + '0';
                 count++;
             }
-            if (j + 1 <= 7 && i + 2 <= 7)/*one right and two down*/
+            if (j + 1 < size + start_col && i + 2 < size + start_row)/*one right and two down*/
             {
-                arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
+                //arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
                 arr[i][j]->positions[count][0] = (i + 2) + 'A';
                 arr[i][j]->positions[count][1] = (j + 1) + 1 + '0';
                 count++;
             }
-            if (j - 1 >= 0 && i + 2 <= 7)/*one left and two down*/
+            if (j - 1 >= start_col && i + 2 < size + start_row)/*one left and two down*/
             {
-                arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
+                //arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
                 arr[i][j]->positions[count][0] = (i + 2) + 'A';
                 arr[i][j]->positions[count][1] = (j - 1) + 1 + '0';
                 count++;
             }
-            if (j - 2 >= 0 && i + 1 <= 7)/*two left and one down*/
+            if (j - 2 >= start_col && i + 1 < size + start_row)/*two left and one down*/
             {
-                arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
+                //arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
                 arr[i][j]->positions[count][0] = (i + 1) + 'A';
                 arr[i][j]->positions[count][1] = (j - 2) + 1 + '0';
                 count++;
             }
-            if (j - 2 >= 0 && i - 1 >= 0)/*two left and one up*/
+            if (j - 2 >= start_col && i - 1 >= start_row)/*two left and one up*/
             {
-                arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
+                //arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
                 arr[i][j]->positions[count][0] = (i - 1) + 'A';
                 arr[i][j]->positions[count][1] = (j - 2) + 1 + '0';
                 count++;
             }
-            if (j - 1 >= 0 && i - 2 >= 0)/*one left and two up*/
+            if (j - 1 >= start_col && i - 2 >= start_row)/*one left and two up*/
             {
-                arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
+                //arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count + 1));
                 arr[i][j]->positions[count][0] = (i - 2) + 'A';
                 arr[i][j]->positions[count][1] = (j - 1) + 1 + '0';
                 count++;
             }
+            arr[i][j]->positions = (chessPos*)realloc(arr[i][j]->positions, sizeof(chessPos) * (count));
+            check_allocation(arr[i][j]->positions);
             arr[i][j]->size = count;
             count = 0;
         }
-        puts("\n");
     }
     return arr;
 }
 void Print_valid_moves(chessPosArray*** valid_moves)
 {
-    for (int i = 0; i <= 7; i++)
+    for (int i = START_POSITION_ROW; i < START_POSITION_ROW+TABLE_SIZE; i++)
     {
-        for (int j = 0; j <= 7; j++)
+        for (int j = START_POSITION_COL; j < START_POSITION_COL + TABLE_SIZE; j++)
         {
             printf("%c%d->", i + 'A', j + 1);
             for (int k = 0; k < valid_moves[i][j]->size; k++)
@@ -102,9 +108,9 @@ void Print_valid_moves(chessPosArray*** valid_moves)
 }
 void Free_valid_moves(chessPosArray*** valid_moves)
 {
-    for (int i = 0; i <= 7; i++)
+    for (int i = START_POSITION_ROW; i <START_POSITION_ROW+TABLE_SIZE; i++)
     {
-        for (int j = 0; j <= 7; j++)
+        for (int j = START_POSITION_COL; j < START_POSITION_COL+TABLE_SIZE; j++)
         {
             free(valid_moves[i][j]->positions);
             free(valid_moves[i][j]);
@@ -240,6 +246,19 @@ void insertPosCellToEndList(chessPosList* lst, chessPosCell* node)
         lst->tail = node;
     }
     node->next = NULL;
+}
+void deletePosCellFromEndList(chessPosList* lst)
+{
+    chessPosCell* node = lst->head;
+    chessPosCell* prev=node;
+    while (node->next)
+    {
+         prev= node;
+        node = node->next;
+    }
+    free(node);
+    prev->next = NULL;
+    lst->tail = prev;
 }
 void freeList(chessPosList* lst)
 {

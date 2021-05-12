@@ -7,22 +7,34 @@
 #include "ChessPos_Lists.h"
 #include "TreeList.h"
 
-#define debug_q1
-#define debug_q2
-//#define debug_q3
+//#define debug_q1
+//#define debug_q2
+#define debug_q3
 //#define debug_q4
 
 
 
 int main()
 {
+    int* table_size, * start_position_row, * start_position_col;
+    table_size = (int*)&TABLE_SIZE;
+    start_position_row = (int*)&START_POSITION_ROW;
+    start_position_col = (int*)&START_POSITION_COL;
     /*Q1*/
 #ifdef debug_q1
+    
+    *table_size = 4;/*8x8*/
+    *start_position_row = 0;/*1*/
+    *start_position_col = 0;/*A*/
+    chessPos start;
+    start[0] = 'A';
+    start[1] = '1';
+    Finding_Table_Boundaries(start, start_position_row, start_position_col);
     chessPosArray*** valid_moves = validKnightMoves();
     Print_valid_moves(valid_moves);
     Free_valid_moves(valid_moves);
+    
 #endif // debug_q1
-
     /*Q2*/
 #ifdef debug_q2
     chessPosCell node9 = { { 'E','1' }, NULL };
@@ -42,8 +54,18 @@ int main()
 
     /*Q3*/
 #ifdef debug_q3
-    chessPos y;
-    findAllpossibleKnightPaths(&y);
+    chessPos start;
+    start[0] = 'A';
+    start[1] = '1';
+    PathTree tree;
+    /*size-4x4*/
+    //*table_size = 4;
+    //Finding_Table_Boundaries(start, start_position_row, start_position_col);
+    //tree= findAllPossibleKnightPaths(&start);
+    /*size-5x5*/
+    *table_size = 5;
+    //Finding_Table_Boundaries(start, start_position_row, start_position_col);
+    tree = findAllPossibleKnightPaths(&start);
 #endif // debug_q3
 
     
