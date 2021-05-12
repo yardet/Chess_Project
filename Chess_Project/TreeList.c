@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 #define ALLOCATION_FAILURE -1
-int yarden = 0;
+int num_of_full_tracks = 0;
 typedef struct treeNode
 {
     chessPos position;
@@ -44,10 +44,10 @@ void findAllPossibleKnightPathsRec(chessPosList lst, treeNode* root)
        
     if (Curr->size == 0)
     { 
-        if (array_size == 25)
+        if (array_size == TABLE_SIZE*TABLE_SIZE)
         {
-            //get_lst(&lst);print
-            yarden++;
+            //print_tracks(&lst);//just a test for question 4
+            num_of_full_tracks++;//just a test for question 4
         }
         root->next_possible_positions = NULL;
         return;
@@ -271,7 +271,7 @@ treeNode* printTreeRec(treeNode* root)
         
 }
 
-void get_lst(chessPosList* lst)
+void print_tracks(chessPosList* lst)
 {
     chessPosCell* myNode = (*lst).head;
     while (myNode)

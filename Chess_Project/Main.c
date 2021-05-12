@@ -59,13 +59,13 @@ int main()
     start[1] = '1';
     PathTree tree;
     /*size-4x4*/
-    //*table_size = 4;
+    *table_size = 4;
     //Finding_Table_Boundaries(start, start_position_row, start_position_col);
-    //tree= findAllPossibleKnightPaths(&start);
+    tree= findAllPossibleKnightPaths(&start);
     /*size-5x5*/
-    *table_size = 5;
-    //Finding_Table_Boundaries(start, start_position_row, start_position_col);
-    tree = findAllPossibleKnightPaths(&start);
+    /*table_size = 5;
+    Finding_Table_Boundaries(start, start_position_row, start_position_col);
+    tree = findAllPossibleKnightPaths(&start);*/
 #endif // debug_q3
 
     

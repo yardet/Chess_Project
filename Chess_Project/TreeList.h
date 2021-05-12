@@ -17,4 +17,4 @@ void insertTreeNodeDataToEndList(treeNode* res, chessPos value);
 void insertTreeNodetoEndList(chessPosList* lst, treeNode* node);
 void printTree(PathTree tree);
 treeNode* printTreeRec(treeNode* root);
-void get_lst(chessPosList* lst);
+void print_tracks(chessPosList* lst);
