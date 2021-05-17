@@ -1,7 +1,8 @@
 #pragma once
 #include <stdbool.h>
-const int START_POSITION_ROW;
-const int START_POSITION_COL;
+#define CHESS_ARRAY_SIZE 8
+const int STARTING_POSITION_ROW;
+const int STARTING_POSITION_COL;
 const int TABLE_SIZE;
 typedef char chessPos[2];
 typedef struct _chessPosCell
@@ -23,13 +24,11 @@ bool isEmptyList(chessPosList* lst);
 void freeList(chessPosList* lst);
 chessPosArray*** validKnightMoves();
 void printList(chessPosList* lst);
-void check_allocation(void* res);
 void display(chessPosList* lst);
 void makeEmptyPosList(chessPosList* lst);
 int isPosAppear(chessPosList* lst, char posFirstChar, char posSecondChar);
 chessPosCell* createNewListNode(chessPos position, chessPosCell* nextNode);
 void insertPosCellToEndList(chessPosList* lst, chessPosCell* node);
 void deletePosCellFromEndList(chessPosList* lst);
-void Print_valid_moves(chessPosArray*** valid_moves);
-void Free_valid_moves(chessPosArray*** valid_moves);
-void insertDataToEndList(chessPosList* res, int num);
+void printValidMoves(chessPosArray*** valid_moves);
+void freeValidMoves(chessPosArray*** valid_moves);

@@ -1,42 +1,44 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#define ALLOCATION_FAILURE -1
 #include "ChessPos_Lists.h"
 #include "TreeList.h"
+#include "Additional functions.h"
 
-//#define debug_q1
-//#define debug_q2
-#define debug_q3
-//#define debug_q4
+//#define DEBUG_Q1
+//#define DEBUG_Q2
+//#define DEBUG_Q3
+//#define DEBUG_Q4
+#define MENU
 
-
-
-int main()
+int main(int argc, char* argv[])
 {
-    int* table_size, * start_position_row, * start_position_col;
-    table_size = (int*)&TABLE_SIZE;
-    start_position_row = (int*)&START_POSITION_ROW;
-    start_position_col = (int*)&START_POSITION_COL;
+    int* tableSize, * initialRowPosition, * initialColPosition; // initial is the same meaning as starting
+    tableSize = (int*)&TABLE_SIZE;
+    initialRowPosition = (int*)&STARTING_POSITION_ROW;
+    initialColPosition = (int*)&STARTING_POSITION_ROW;
+#ifdef MENU
+    /*size-5x5*/
+    tableSize = 5;
+    menu();
+#endif // MENU
+
     /*Q1*/
-#ifdef debug_q1
-    
-    *table_size = 4;/*8x8*/
-    *start_position_row = 0;/*1*/
-    *start_position_col = 0;/*A*/
+#ifdef DEBUG_Q1
+
+    * tableSize = 4;/*8x8*/
+    *initialRowPosition = 0;/*1*/
+    *initialColPosition = 0;/*A*/
     chessPos start;
     start[0] = 'A';
     start[1] = '1';
-    Finding_Table_Boundaries(start, start_position_row, start_position_col);
+    getTableBoundaries(start, initialRowPosition, initialColPosition);
     chessPosArray*** valid_moves = validKnightMoves();
-    Print_valid_moves(valid_moves);
-    Free_valid_moves(valid_moves);
-    
-#endif // debug_q1
+    printValidMoves(valid_moves);
+    freeValidMoves(valid_moves);
+
+#endif // DEBUG_Q1
     /*Q2*/
-#ifdef debug_q2
+#ifdef DEBUG_Q2
+    /*Example as shown in instructions*/
     chessPosCell node9 = { { 'E','1' }, NULL };
     chessPosCell node8 = { {'E', '1'}, &node9 };
     chessPosCell node7 = { {'E', '1'}, &node8 };
@@ -49,29 +51,24 @@ int main()
 
     chessPosList newList = { &node1, &node9 };
     display(&newList);
-    //freeList(&newList); problem
-#endif // debug_q2
+    //freeList(&newList);
+#endif // DEBUG_Q2
 
     /*Q3*/
-#ifdef debug_q3
+#ifdef DEBUG_Q3
     chessPos start;
     start[0] = 'A';
     start[1] = '1';
     PathTree tree;
     /*size-4x4*/
-    *table_size = 4;
-    //Finding_Table_Boundaries(start, start_position_row, start_position_col);
-    tree= findAllPossibleKnightPaths(&start);
+    *tableSize = 4;
+    // getTableBoundaries(start, initialRowPosition, initialColPosition);
+    tree = findAllPossibleKnightPaths(&start);
     /*size-5x5*/
-    /*table_size = 5;
-    Finding_Table_Boundaries(start, start_position_row, start_position_col);
+    /*tableSize = 5;
+    getTableBoundaries(start, initialRowPosition, initialColPosition);
     tree = findAllPossibleKnightPaths(&start);*/
-#endif // debug_q3
+#endif // DEBUG_Q3
 
-    
     return 0;
 }
-
-
-
-
