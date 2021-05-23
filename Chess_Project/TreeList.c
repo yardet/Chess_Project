@@ -122,6 +122,7 @@ chessPosList* findknightPathCoveringAllBoardRec(chessPosList* lst, treeNode* roo
                 *stop = 1;
                 findknightPathCoveringAllBoardRec(lst, root, stop);
             }
+            return;
         }
         else
         {

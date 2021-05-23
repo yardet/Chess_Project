@@ -13,7 +13,7 @@ void checkAllocation(void* res)
 void menu()
 {
     int* tableSize = (int*)&TABLE_SIZE;
-    *tableSize = 5;
+    *tableSize = 4;
     int Selection;
     chessPos starting_position;
     starting_position[0] = 'A';/*For default*/
