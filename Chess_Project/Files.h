@@ -1,7 +1,7 @@
 #pragma once
 #include "ChessPos_Lists.h"
 #include"TreeList.h"
-#include "Additional functions.h";
+#include "Additional functions.h"
 #include <stdio.h>
 
 void saveListToBinFile(char* file_name, chessPosList* pos_list);

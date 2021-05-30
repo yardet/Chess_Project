@@ -49,7 +49,6 @@ unsigned int getFiveCellsInBytes(chessPosCell** pnode)
 {
 	unsigned char rowValue, colValue;
 	unsigned int resInBytes = 0;
-	int i;
 	unsigned int shiftSize = 29;
 	unsigned int leftMask = (1 << 31) + (1 << 30) + (1 << 29);
 	int numOfLoops = 0;
@@ -71,26 +70,29 @@ unsigned int getFiveCellsInBytes(chessPosCell** pnode)
 
 void printCellsFromBinaryFile(FILE* file)
 {
-	int i;
+	int i, j;
 	int toPrint;
 	unsigned short int numberOfCells;
 	unsigned int valuesInBytes;
-	unsigned int leftMask = (1 << 31) + (1 << 30) + (1 << 29);
-	int shiftSize = 29;
 	fread(&numberOfCells, sizeof(unsigned short int), 1, file);
 	fread(&valuesInBytes, sizeof(unsigned int), 1, file);
-	for (i = 0; i < numberOfCells; i++)
+	for (i = 0; i < numberOfCells / 5; i++)
 	{
-		toPrint = valuesInBytes & leftMask;
-		toPrint = (toPrint >> shiftSize) + 'A';
-		printf("%c", (char)toPrint);
-		leftMask = leftMask >> 3;
-		shiftSize = shiftSize - 3;
-		toPrint = valuesInBytes & leftMask;
-		toPrint = (toPrint >> shiftSize) + '1';
-		printf("%c->", (char)toPrint);
-		leftMask = leftMask >> 3;
-		shiftSize = shiftSize - 3;
+		unsigned int leftMask = (1 << (31 * (i +  1) - 0)) + (1 << (31 * (i + 1) - 1)) + (1 << (31 * (i + 1) - 2));
+		int shiftSize = 29;
+		for (j = 0; j < 5; j++)
+		{
+			toPrint = valuesInBytes & leftMask;
+			toPrint = (toPrint >> shiftSize) + 'A';
+			printf("%c", (char)toPrint);
+			leftMask = leftMask >> 3;
+			shiftSize = shiftSize - 3;
+			toPrint = valuesInBytes & leftMask;
+			toPrint = (toPrint >> shiftSize) + '1';
+			printf("%c->", (char)toPrint);
+			leftMask = leftMask >> 3;
+			shiftSize = shiftSize - 3;
+		}
 	}
 	puts("NULL\n");
 }

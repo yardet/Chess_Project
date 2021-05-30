@@ -71,19 +71,19 @@ int main(int argc, char* argv[])
     *tableSize = 4;
     // getTableBoundaries(start, initialRowPosition, initialColPosition);
     tree = findAllPossibleKnightPaths(&start);
-    free_path_tree(&tree);
+    freePathTree(&tree);
     /*size-5x5*/
     //tableSize = 5;
     //getTableBoundaries(start, initialRowPosition, initialColPosition);
     //tree = findAllPossibleKnightPaths(&start);
-    //free_path_tree(&tree);
+    //freePathTree(&tree);
 #endif // DEBUG_Q3
 
     /*Q4*/
 #ifdef DEBUG_Q4
-    chessPosList* Path_cover_all_board;
-    Path_cover_all_board= findknightPathCoveringAllBoard(&tree);
-    freeList(Path_cover_all_board);
+    chessPosList* pathCoverAllBoard;
+    pathCoverAllBoard = findKnightPathCoveringAllBoard(&tree);
+    freeList(pathCoverAllBoard);
 #endif // DEBUG_Q4
 
     /*Q5*/

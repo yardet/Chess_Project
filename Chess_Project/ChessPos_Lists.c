@@ -13,53 +13,52 @@ chessPosArray*** validKnightMoves()
         int i, j, countPossiblePositions = 0;
         int initialRow = STARTING_POSITION_ROW; /*row boundary location*/
         int initialCol = STARTING_POSITION_COL; /*col boundary location*/
-        int sizeOfTable = TABLE_SIZE;
-        for (i = initialRow; i < initialRow + sizeOfTable; i++)
+        for (i = initialRow; i < initialRow + TABLE_SIZE; i++)
         {
-            possiblePositionsArr[i] = (chessPosArray**)malloc(sizeof(chessPosArray) * (sizeOfTable));
+            possiblePositionsArr[i] = (chessPosArray**)malloc(sizeof(chessPosArray*) * TABLE_SIZE);
             checkAllocation(possiblePositionsArr[i]);
-            for (j = initialRow; j < initialRow + sizeOfTable; j++)
+            for (j = initialRow; j < initialRow + TABLE_SIZE; j++)
             {
-                possiblePositionsArr[i][j] = (chessPosArray*)malloc(sizeof(chessPosArray) + 1);
+                possiblePositionsArr[i][j] = (chessPosArray*)malloc(sizeof(chessPosArray)); //  possiblePositionsArr[i][j] = (chessPosArray*)malloc(sizeof(chessPosArray) + 1);
                 checkAllocation(possiblePositionsArr[i][j]);
                 possiblePositionsArr[i][j]->positions = (chessPos*)malloc(sizeof(chessPos) * (CHESS_ARRAY_SIZE));
                 checkAllocation(possiblePositionsArr[i][j]->positions);
-                if ((j + 1) < sizeOfTable + initialRow && (i - 2) >= initialRow) /*one right and two up*/
+                if ((j + 1) < TABLE_SIZE + initialRow && (i - 2) >= initialRow) /*one right and two up*/
                 {
                     //possiblePositionsArr[i][j]->positions = (chessPos*)realloc(possiblePositionsArr[i][j]->positions, sizeof(chessPos) * (count + 1));
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i - 2) + 'A';
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][1] = (j + 1) + 1 + '0';
                     countPossiblePositions++;
                 }
-                if (j + 2 < sizeOfTable + initialRow && i - 1 >= initialRow) /*two right and one up*/
+                if (j + 2 < TABLE_SIZE + initialRow && i - 1 >= initialRow) /*two right and one up*/
                 {
                     //possiblePositionsArr[i][j]->positions = (chessPos*)realloc(possiblePositionsArr[i][j]->positions, sizeof(chessPos) * (count + 1));
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i - 1) + 'A';
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][1] = (j + 2) + 1 + '0';
                     countPossiblePositions++;
                 }
-                if (j + 2 < sizeOfTable + initialRow && i + 1 < sizeOfTable + initialRow) /*two right and one down*/
+                if (j + 2 < TABLE_SIZE + initialRow && i + 1 < TABLE_SIZE + initialRow) /*two right and one down*/
                 {
                     //possiblePositionsArr[i][j]->positions = (chessPos*)realloc(possiblePositionsArr[i][j]->positions, sizeof(chessPos) * (count + 1));
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i + 1) + 'A';
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][1] = (j + 2) + 1 + '0';
                     countPossiblePositions++;
                 }
-                if (j + 1 < sizeOfTable + initialRow && i + 2 < sizeOfTable + initialRow) /*one right and two down*/
+                if (j + 1 < TABLE_SIZE + initialRow && i + 2 < TABLE_SIZE + initialRow) /*one right and two down*/
                 {
                     //possiblePositionsArr[i][j]->positions = (chessPos*)realloc(possiblePositionsArr[i][j]->positions, sizeof(chessPos) * (count + 1));
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i + 2) + 'A';
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][1] = (j + 1) + 1 + '0';
                     countPossiblePositions++;
                 }
-                if (j - 1 >= initialRow && i + 2 < sizeOfTable + initialRow) /*one left and two down*/
+                if (j - 1 >= initialRow && i + 2 < TABLE_SIZE + initialRow) /*one left and two down*/
                 {
                     //possiblePositionsArr[i][j]->positions = (chessPos*)realloc(possiblePositionsArr[i][j]->positions, sizeof(chessPos) * (count + 1));
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i + 2) + 'A';
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][1] = (j - 1) + 1 + '0';
                     countPossiblePositions++;
                 }
-                if (j - 2 >= initialRow && i + 1 < sizeOfTable + initialRow) /*two left and one down*/
+                if (j - 2 >= initialRow && i + 1 < TABLE_SIZE + initialRow) /*two left and one down*/
                 {
                     //possiblePositionsArr[i][j]->positions = (chessPos*)realloc(possiblePositionsArr[i][j]->positions, sizeof(chessPos) * (count + 1));
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i + 1) + 'A';
@@ -99,7 +98,7 @@ void printValidMoves(chessPosArray*** valid_moves)
         for (int j = STARTING_POSITION_COL; j < STARTING_POSITION_COL + TABLE_SIZE; j++)
         {
             printf("%c%d->", i + 'A', j + 1);
-            for (int k = 0; k < valid_moves[i][j]->size; k++)
+            for (int k = 0; k < (int)valid_moves[i][j]->size; k++)
             {
                 printf("%c%c,", valid_moves[i][j]->positions[k][0], valid_moves[i][j]->positions[k][1]);
             }
@@ -123,6 +122,7 @@ void freeValidMoves(chessPosArray*** valid_moves)
 }
 void display(chessPosList* plst)
 {
+    // bool allAppearingCellsInBoard[8][8];
     int lstSize = 0;
     chessPosList tmpList;
     chessPosCell* node = plst->head, * tmpNode = node->next, * insertNodeToList;
@@ -174,7 +174,7 @@ void printList(chessPosList* lst)
 {
     chessPosCell* node = lst->head;
     int i, j, count = 1;
-    char sign, chessArray[CHESS_ARRAY_SIZE][CHESS_ARRAY_SIZE][1];
+    char chessArray[CHESS_ARRAY_SIZE][CHESS_ARRAY_SIZE][1];
     while (node != NULL)
     {
         chessArray[(int)node->position[0] - 65][(int)node->position[1] - 49][0] = count + '0';
