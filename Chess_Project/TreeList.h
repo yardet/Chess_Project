@@ -20,4 +20,6 @@ void printTree(PathTree tree);
 void printTreeRec(treeNode* root);
 void printAllPossitionsRoutes(chessPosList* lst);
 chessPosList* findknightPathCoveringAllBoard(PathTree* path_tree);
-chessPosList* findknightPathCoveringAllBoardRec(chessPosList* lst, treeNode* root,int* stop);
+chessPosList* findknightPathCoveringAllBoardRec(chessPosList* lst, treeNode* root,int* stop, int* possibleRoutesCounter);
+void free_path_tree(PathTree* path_tree);
+void free_path_tree_rec(treeNode* root);

@@ -271,6 +271,7 @@ void freeList(chessPosList* lst)
     curr = lst->head;
     while (curr != NULL)
     {
+        next=curr;
         next = curr->next;
         free(curr->position);
         free(curr);

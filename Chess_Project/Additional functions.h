@@ -5,3 +5,4 @@
 void checkAllocation(void* res);
 void menu();
 void Position_integrity_check(chessPos position);
+void Print_Menu(bool* Op_arr);

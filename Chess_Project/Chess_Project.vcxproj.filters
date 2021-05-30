@@ -27,6 +27,9 @@
     <ClCompile Include="Additional_functions.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Files.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessPos_Lists.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Additional functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Files.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

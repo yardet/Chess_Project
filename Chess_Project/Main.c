@@ -1,12 +1,18 @@
 #define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "ChessPos_Lists.h"
 #include "TreeList.h"
 #include "Additional functions.h"
+#include "Files.h"
 
 //#define DEBUG_Q1
 //#define DEBUG_Q2
 //#define DEBUG_Q3
 //#define DEBUG_Q4
+//#define DEBUG_Q5
+//#define DEBUG_Q6
 #define MENU
 
 int main(int argc, char* argv[])
@@ -15,9 +21,9 @@ int main(int argc, char* argv[])
     tableSize = (int*)&TABLE_SIZE;
     initialRowPosition = (int*)&STARTING_POSITION_ROW;
     initialColPosition = (int*)&STARTING_POSITION_ROW;
+
+    /*Q7*/
 #ifdef MENU
-    /*size-5x5*/
-    tableSize = 5;
     menu();
 #endif // MENU
 
@@ -36,6 +42,7 @@ int main(int argc, char* argv[])
     freeValidMoves(valid_moves);
 
 #endif // DEBUG_Q1
+
     /*Q2*/
 #ifdef DEBUG_Q2
     /*Example as shown in instructions*/
@@ -64,11 +71,43 @@ int main(int argc, char* argv[])
     *tableSize = 4;
     // getTableBoundaries(start, initialRowPosition, initialColPosition);
     tree = findAllPossibleKnightPaths(&start);
+    free_path_tree(&tree);
     /*size-5x5*/
-    /*tableSize = 5;
-    getTableBoundaries(start, initialRowPosition, initialColPosition);
-    tree = findAllPossibleKnightPaths(&start);*/
+    //tableSize = 5;
+    //getTableBoundaries(start, initialRowPosition, initialColPosition);
+    //tree = findAllPossibleKnightPaths(&start);
+    //free_path_tree(&tree);
 #endif // DEBUG_Q3
 
+    /*Q4*/
+#ifdef DEBUG_Q4
+    chessPosList* Path_cover_all_board;
+    Path_cover_all_board= findknightPathCoveringAllBoard(&tree);
+    freeList(Path_cover_all_board);
+#endif // DEBUG_Q4
+
+    /*Q5*/
+#ifdef DEBUG_Q5
+    int i = NULL;
+    chessPosCell node5 = { {'E', '3'},NULL};
+    chessPosCell node4 = { {'D', '1'}, &node5 };
+    chessPosCell node3 = { {'B', '3'}, &node4 };
+    chessPosCell node2 = { {'A', '4'}, &node3 };
+    chessPosCell node1 = { {'C', '5'}, &node2 };
+
+    chessPosList newList = { &node1, &node4 };
+
+    char* str = (char*)malloc(19 * sizeof(char));
+    str = "bytesInBinary.bin";
+    saveListToBinFile(str, &newList);
+#endif // DEBUG_Q5
+
+    /*Q6*/
+#ifdef DEBUG_Q6
+    FILE* fp;
+    fp = fopen(str, "rb");
+    printCellsFromBinaryFile(fp);
+    fclose(fp);
+#endif // DEBUG_Q6
     return 0;
 }

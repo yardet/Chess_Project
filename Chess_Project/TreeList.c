@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-// #include <string.h>
+ #include <string.h>
 
 typedef struct treeNode
 {
@@ -16,7 +16,7 @@ typedef struct treeNodeListCell
     treeNode* node;
     struct treeNodeListCell* next;
 }treeNodeListCell;
-int possibleRoutesCounter = 0;
+//int possibleRoutesCounter = 0;
 
 PathTree findAllPossibleKnightPaths(chessPos* startingPosition)
 {
@@ -61,11 +61,6 @@ void findAllPossibleKnightPathsRec(chessPosList lst, treeNode* root)
 
     if (currPosition->size == 0)
     {
-        if (routeSize == TABLE_SIZE * TABLE_SIZE -1)
-        {
-            //printAllPossitionsRoutes(&lst); /*test for question 4*/
-            //possibleRoutesCounter++; /*test for question 4*/
-        }
         root->next_possible_positions = NULL;
         return;
     }
@@ -93,15 +88,22 @@ chessPosList* findknightPathCoveringAllBoard(PathTree* path_tree)
     makeEmptyPosList(Path_list);
     if (path_tree->root)
     {
-        int* n=(int*)malloc(sizeof(int));
+        int* n = (int*)malloc(sizeof(int));
         *n = 0;
-       Path_list = findknightPathCoveringAllBoardRec(Path_list, path_tree->root,n);
-       printAllPossitionsRoutes(Path_list);
-       return Path_list;
+        int* possibleRoutesCounter=(int*)malloc(sizeof(int));
+        checkAllocation(possibleRoutesCounter);
+        *(possibleRoutesCounter) = 0;
+        Path_list = findknightPathCoveringAllBoardRec(Path_list, path_tree->root, n,possibleRoutesCounter);
+        if (Path_list)
+        {
+            printAllPossitionsRoutes(Path_list);
+            return Path_list;
+        }
+        free(possibleRoutesCounter);
     }
     return NULL;
 }
-chessPosList* findknightPathCoveringAllBoardRec(chessPosList* lst, treeNode* root,int* stop)
+chessPosList* findknightPathCoveringAllBoardRec(chessPosList* lst, treeNode* root,int* stop,int* possibleRoutesCounter)
 {
     if (*stop==1)
     {
@@ -110,17 +112,16 @@ chessPosList* findknightPathCoveringAllBoardRec(chessPosList* lst, treeNode* roo
     else
     {
         chessPosCell* node = createNewListNode(root->position, NULL);
-        possibleRoutesCounter++;
+        (*possibleRoutesCounter)++;
         insertPosCellToEndList(lst, node);
         treeNodeListCell* res = root->next_possible_positions;
         int i;
         if (res == NULL)
         {
-            if (possibleRoutesCounter == TABLE_SIZE * TABLE_SIZE)
+            if ((*possibleRoutesCounter) == TABLE_SIZE * TABLE_SIZE-1)
             {
-                //printAllPossitionsRoutes(lst);
                 *stop = 1;
-                findknightPathCoveringAllBoardRec(lst, root, stop);
+                findknightPathCoveringAllBoardRec(lst, root, stop, possibleRoutesCounter);
             }
             return;
         }
@@ -132,7 +133,7 @@ chessPosList* findknightPathCoveringAllBoardRec(chessPosList* lst, treeNode* roo
             while (currNode&&(*stop)==0)
             {
                 prevNode = currNode;
-                findknightPathCoveringAllBoardRec(lst, prevNode->node,stop);
+                findknightPathCoveringAllBoardRec(lst, prevNode->node,stop,possibleRoutesCounter);
                 if ((*stop) == 1)
                 {
                     return lst;
@@ -141,9 +142,14 @@ chessPosList* findknightPathCoveringAllBoardRec(chessPosList* lst, treeNode* roo
                 {
                     currNode = currNode->next;
                     deletePosCellFromEndList(lst);
-                    possibleRoutesCounter--;
+                    (*possibleRoutesCounter)--;
                 } 
             }
+            if ((*possibleRoutesCounter) == 1)
+            {
+                deletePosCellFromEndList(lst);
+                return NULL;
+            }  
         }
     }  
 }
@@ -322,15 +328,6 @@ void getTableBoundaries(chessPos position, int* pStartingPositionRow, int* pStar
     *pStartingPositionRow = initialRowPositionTmp;
     *pStartingPositionCol = initialColPositionTmp;
 }
-
-/*void insertTreeNodeDataToEndList(treeNode* res, chessPos value)
-{
-
-}
-void insertTreeNodetoEndList(chessPosList* lst, treeNode* node)
-{
-
-}*/
 void printTree(PathTree tree)
 {
     treeNode* node = tree.root;
@@ -370,4 +367,37 @@ void printAllPossitionsRoutes(chessPosList* lst)
         myNode = myNode->next;
     }
     puts("\n");
+}
+void free_path_tree(PathTree* path_tree)
+{
+    treeNode* node = path_tree->root;
+    if (node)
+    {
+        free_path_tree_rec(node);
+        free(node);
+    }
+}
+void free_path_tree_rec(treeNode* root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    else if (root->next_possible_positions != NULL)
+    {
+        treeNodeListCell* currNode = root->next_possible_positions;
+        while (currNode != NULL)
+        {
+            //printf("%c%c->", currNode->node->position[0], currNode->node->position[1]);
+            free_path_tree_rec(currNode->node);
+            treeNodeListCell* PrevNode = currNode;
+            currNode = currNode->next;
+            free(PrevNode->node);
+            free(PrevNode);
+        }
+    }
+    else
+    {
+        return;
+    }
 }
