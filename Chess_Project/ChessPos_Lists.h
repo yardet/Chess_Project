@@ -20,15 +20,23 @@ typedef struct __chessPosList
     chessPosCell* head;
     chessPosCell* tail;
 }chessPosList;
-bool isEmptyList(chessPosList* lst);
-void freeList(chessPosList* lst);
-chessPosArray*** validKnightMoves();
-void printList(chessPosList* lst);
-void display(chessPosList* lst);
-void makeEmptyPosList(chessPosList* lst);
-int isPosAppear(chessPosList* lst, char posFirstChar, char posSecondChar);
-chessPosCell* createNewListNode(chessPos position, chessPosCell* nextNode);
-void insertPosCellToEndList(chessPosList* lst, chessPosCell* node);
-void deletePosCellFromEndList(chessPosList* lst);
+
+// Q1
+chessPosArray*** validKnightMoves(); // Used in Q3
 void printValidMoves(chessPosArray*** valid_moves);
 void freeValidMoves(chessPosArray*** valid_moves);
+
+// Q2
+chessPosList getExampleChessPosList();
+void display(chessPosList* lst); // Used in Q6
+bool** getBooleanMatrix(int rowSize, int colSize);
+void makeEmptyChessPosList(chessPosList* lst);
+chessPosCell* createNewListNode(chessPos position, chessPosCell* nextNode); // Used in Q3
+void insertChessPosCellToEndList(chessPosList* lst, chessPosCell* node); // Used in Q3
+bool isEmptyList(chessPosList* lst);
+void freeBooleanMatrix(bool** arr, int rowSize);
+void printList(chessPosList* lst);
+void freeList(chessPosList* lst);
+
+// Q3, Q4
+void deleteLastChessPosCellFromList(chessPosList* lst);

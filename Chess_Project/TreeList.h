@@ -5,21 +5,29 @@ typedef struct treeNodeListCell treeNodeListCell;
 typedef struct _pathTree
 {
     treeNode* root;
-}PathTree;
-PathTree findAllPossibleKnightPaths(chessPos* startingPosition);
+}pathTree;
+
+// Q1, Q3
+void getTableBoundaries(chessPos position, int* pStartingPositionRow, int* pStartingPositionCol);
+
+// Q3
+pathTree findAllPossibleKnightPaths(chessPos* startingPosition);
 void findAllPossibleKnightPathsRec(chessPosList lst, treeNode* root);
 //void findAllPossibleKnightPathsRec(int** positions_history, treeNode* root);
-bool positionExistsInList(chessPosList lst, chessPos currPosition); /*Returns the new size of the positions dynamic array*/
 int deleteRepeatableCells(chessPosArray** Curr, chessPosList lst);
 //int deleteRepeatableCells(chessPosArray** Curr, int** positions_history);
-void getTableBoundaries(chessPos position, int* pStartingPositionRow, int* pStartingPositionCol);
 treeNode* allocateNewTreeNode(treeNodeListCell** pTreeNode, char* position);
 // void insertTreeNodeDataToEndList(treeNode* res, chessPos value);
 // void insertTreeNodetoEndList(chessPosList* lst, treeNode* node);
-void printTree(PathTree tree);
+void printTree(pathTree tree);
 void printTreeRec(treeNode* root);
-void printAllPossitionsRoutes(chessPosList* lst);
-chessPosList* findKnightPathCoveringAllBoard(PathTree* path_tree);
+
+// Q4
+chessPosList* findKnightPathCoveringAllBoard(pathTree* path_tree);
 chessPosList* findKnightPathCoveringAllBoardRec(chessPosList* lst, treeNode* root,int* stop, int* possibleRoutesCounter);
-void freePathTree(PathTree* path_tree);
+void printAllPossitionsRoutes(chessPosList* lst);
+
+// Not used
+bool positionExistsInList(chessPosList lst, chessPos currPosition); /*Returns the new size of the positions dynamic array*/
+void freePathTree(pathTree* path_tree);
 void freePathTreeRec(treeNode* root);

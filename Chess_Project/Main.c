@@ -9,11 +9,11 @@
 
 //#define DEBUG_Q1
 //#define DEBUG_Q2
-//#define DEBUG_Q3
+#define DEBUG_Q3
 //#define DEBUG_Q4
 //#define DEBUG_Q5
 //#define DEBUG_Q6
-#define MENU
+// #define MENU
 
 int main(int argc, char* argv[])
 {
@@ -45,38 +45,23 @@ int main(int argc, char* argv[])
 
     /*Q2*/
 #ifdef DEBUG_Q2
-    /*Example as shown in instructions*/
-    chessPosCell node9 = { { 'E','1' }, NULL };
-    chessPosCell node8 = { {'E', '1'}, &node9 };
-    chessPosCell node7 = { {'E', '1'}, &node8 };
-    chessPosCell node6 = { {'E', '1'}, &node7 };
-    chessPosCell node5 = { {'A', '4'}, &node6 };
-    chessPosCell node4 = { {'H', '5'}, &node5 };
-    chessPosCell node3 = { {'D', '8'}, &node4 };
-    chessPosCell node2 = { {'H', '5'}, &node3 };
-    chessPosCell node1 = { {'A', '4'}, &node2 };
-
-    chessPosList newList = { &node1, &node9 };
+    * tableSize = 8;
+    chessPosList newList = getExampleChessPosList();
     display(&newList);
-    //freeList(&newList);
+    freeList(&newList);
 #endif // DEBUG_Q2
 
     /*Q3*/
 #ifdef DEBUG_Q3
-    chessPos start;
-    start[0] = 'A';
-    start[1] = '1';
-    PathTree tree;
-    /*size-4x4*/
-    *tableSize = 4;
-    // getTableBoundaries(start, initialRowPosition, initialColPosition);
+    chessPos start = { 'A', '1' };/*Sample location(in the menu is inputs by the user)*/
+    pathTree tree;
+    *tableSize = 4; // board size - 4x4
     tree = findAllPossibleKnightPaths(&start);
     freePathTree(&tree);
     /*size-5x5*/
-    //tableSize = 5;
-    //getTableBoundaries(start, initialRowPosition, initialColPosition);
-    //tree = findAllPossibleKnightPaths(&start);
-    //freePathTree(&tree);
+    /*tableSize = 5;
+    tree = findAllPossibleKnightPaths(&start);
+    freePathTree(&tree);*/
 #endif // DEBUG_Q3
 
     /*Q4*/
@@ -98,6 +83,7 @@ int main(int argc, char* argv[])
     chessPosList newList = { &node1, &node4 };
 
     char* str = (char*)malloc(19 * sizeof(char));
+    checkAllocation(str);
     str = "bytesInBinary.bin";
     saveListToBinFile(str, &newList);
 #endif // DEBUG_Q5
@@ -106,6 +92,7 @@ int main(int argc, char* argv[])
 #ifdef DEBUG_Q6
     FILE* fp;
     fp = fopen(str, "rb");
+    checkAllocation(fp);
     printCellsFromBinaryFile(fp);
     fclose(fp);
 #endif // DEBUG_Q6

@@ -31,16 +31,10 @@ void menu()
     {
         operationArr[i] = false;
     }
-    PathTree tree;
+    pathTree tree;
     tree.root = NULL;
     chessPosList* pathCoverAllBoard;
-    makeEmptyPosList(&pathCoverAllBoard);
-   /* puts("Hello!\n1. Enter a knight's starting postion\n ");
-    puts("2. Create all possible knight paths\n");
-    puts("3. Find a knight path covering all borad\n");
-    puts("4. Save knight path covering all board to file\n");
-    puts("5. Load and display path from file\n");
-    puts("6. Exit\n");*/
+    makeEmptyChessPosList(&pathCoverAllBoard);
     printMenu(operationArr);
     scanf("%d", &Selection);
     while (Selection != 6)
@@ -121,7 +115,7 @@ void menu()
                 positionIntegrityCheck(starting_position);
                 operationArr[0] = true;
             }
-            if (!!tree.root)
+            if (!tree.root)
             {
                 tree = findAllPossibleKnightPaths(&starting_position);
                 if (tree.root)
@@ -147,18 +141,21 @@ void menu()
             operationArr[3] = true;
             break;
         case 5:
+            puts("enter file name:");
             scanf("%s", file_name_in);
             fp = fopen(file_name_in, "rb");
             checkAllocation(fp);
             printCellsFromBinaryFile(fp);
             operationArr[4] = true;
             fclose(fp);
+            system("PASUE");/*waiting for 'enter'(Just to see the print before the screen is cleared) */
+            break;
         default:
             system("cls");
             puts("Error,Please select a valid number\n");
         }
         system("cls");
-        printMenu(operationArr);
+        printMenu(operationArr);/*print the menu again*/
         scanf("%d", &Selection);
     }
     system("cls");
@@ -171,8 +168,7 @@ void positionIntegrityCheck(chessPos position)
     while ((position[0] < 'A' || position[0] > TABLE_SIZE + 'A') ||( position[1]-'0' < 1 || position[1]-'0' > TABLE_SIZE))
     {
         puts("Error,Please select a valid position:");
-        //printf("Enter here:");
-        
+        printf("Enter here:");
         getchar();
         scanf("%c%c", &position[0], &position[1]);
     }
