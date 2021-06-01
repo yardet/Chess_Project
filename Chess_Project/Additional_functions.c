@@ -146,7 +146,8 @@ void menu()
             scanf("%s", file_name_in);
             fp = fopen(file_name_in, "rb");
             checkAllocation(fp);
-            printCellsFromBinaryFile(fp);
+            chessPosList* pos_list= getCellsFromBinaryFile(fp);
+            display(pos_list);
             operationArr[4] = true;
             fclose(fp);
             system("PASUE");/*waiting for 'enter'(Just to see the print before the screen is cleared) */

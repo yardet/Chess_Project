@@ -12,4 +12,4 @@ unsigned int getFiveCellsInBytes(chessPosCell** pnode);
 
 // Q6
 int checkAndDisplayPathFromFile(char* file_name);
-void printCellsFromBinaryFile(FILE* file);
+chessPosList* getCellsFromBinaryFile(FILE* file);

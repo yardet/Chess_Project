@@ -93,7 +93,8 @@ int main(int argc, char* argv[])
     FILE* fp;
     fp = fopen(str, "rb");
     checkAllocation(fp);
-    printCellsFromBinaryFile(fp);
+    chessPosList* pos_list=getCellsFromBinaryFile(fp);
+    display(pos_list);
     fclose(fp);
 #endif // DEBUG_Q6
     return 0;

@@ -68,13 +68,17 @@ unsigned int getFiveCellsInBytes(chessPosCell** pnode)
 	return resInBytes;
 }
 
-void printCellsFromBinaryFile(FILE* file)
+chessPosList* getCellsFromBinaryFile(FILE* file)
 {
 	int i, j;
 	int toPrint;
 	unsigned short int numberOfCells;
 	unsigned int valuesInBytes;
+
 	fread(&numberOfCells, sizeof(unsigned short int), 1, file);
+	chessPosList* pos_list = (chessPosList*)malloc(sizeof(chessPosList)*numberOfCells);
+	checkAllocation(pos_list);
+	makeEmptyChessPosList(pos_list);
 	fread(&valuesInBytes, sizeof(unsigned int), 1, file);
 	for (i = 0; i < numberOfCells / 5; i++)
 	{
@@ -82,17 +86,24 @@ void printCellsFromBinaryFile(FILE* file)
 		int shiftSize = 29;
 		for (j = 0; j < 5; j++)
 		{
+			chessPos position;
+
 			toPrint = valuesInBytes & leftMask;
 			toPrint = (toPrint >> shiftSize) + 'A';
-			printf("%c", (char)toPrint);
+			//printf("%c", (char)toPrint);
+			position[0] = toPrint;
 			leftMask = leftMask >> 3;
 			shiftSize = shiftSize - 3;
 			toPrint = valuesInBytes & leftMask;
 			toPrint = (toPrint >> shiftSize) + '1';
-			printf("%c->", (char)toPrint);
+			//printf("%c->", (char)toPrint);
+			position[1] = toPrint;
 			leftMask = leftMask >> 3;
 			shiftSize = shiftSize - 3;
+			chessPosCell* node = createNewListNode(position, NULL);
+			insertChessPosCellToEndList(pos_list, node);
 		}
 	}
-	puts("NULL\n");
+	//puts("NULL\n");
+	return pos_list;
 }
