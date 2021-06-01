@@ -6,6 +6,7 @@
 #include "Files.h"
 #include "TreeList.h"
 #define NUM_OF_OPTIONS 5
+#define FILE_LEN 20
 void checkAllocation(void* res)
 {
     if (!res)
@@ -17,13 +18,13 @@ void checkAllocation(void* res)
 void menu()
 {
     int* tableSize = (int*)&TABLE_SIZE;
-    *tableSize = 4;
+    *tableSize = 5;
     int Selection;
     FILE* fp;
     bool* operationArr = (bool*)malloc(sizeof(bool) * NUM_OF_OPTIONS);
     checkAllocation(operationArr);
-    char* file_name = (char*)malloc(sizeof(char) * 20);
-    char* file_name_in= (char*)malloc(sizeof(char) * 20);
+    char* file_name = (char*)malloc(sizeof(char) * FILE_LEN);
+    char* file_name_in= (char*)malloc(sizeof(char) * FILE_LEN);
     chessPos starting_position;
     starting_position[0] = 'A';/*For default*/
     starting_position[1] = '1';
@@ -91,7 +92,7 @@ void menu()
                 positionIntegrityCheck(starting_position);
                 operationArr[0] = true;
             }
-            if (tree.root == NULL)
+            if (!operationArr[1])
                 tree = findAllPossibleKnightPaths(&starting_position);
             if (tree.root)
                 operationArr[1] = true;
@@ -115,7 +116,7 @@ void menu()
                 positionIntegrityCheck(starting_position);
                 operationArr[0] = true;
             }
-            if (!tree.root)
+            if (!operationArr[1])
             {
                 tree = findAllPossibleKnightPaths(&starting_position);
                 if (tree.root)
@@ -158,6 +159,10 @@ void menu()
         printMenu(operationArr);/*print the menu again*/
         scanf("%d", &Selection);
     }
+    if (tree.root)
+        freePathTree(&tree);
+    if (pathCoverAllBoard)
+        freeList(pathCoverAllBoard);
     system("cls");
     puts("Thanks you!\n");
     free(operationArr);
@@ -169,7 +174,6 @@ void positionIntegrityCheck(chessPos position)
     {
         puts("Error,Please select a valid position:");
         printf("Enter here:");
-        getchar();
         scanf("%c%c", &position[0], &position[1]);
     }
 }

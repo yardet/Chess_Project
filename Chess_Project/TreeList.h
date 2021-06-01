@@ -8,17 +8,13 @@ typedef struct _pathTree
 }pathTree;
 
 // Q1, Q3
-void getTableBoundaries(chessPos position, int* pStartingPositionRow, int* pStartingPositionCol);
+//void getTableBoundaries(chessPos position, int* pStartingPositionRow, int* pStartingPositionCol);
 
 // Q3
 pathTree findAllPossibleKnightPaths(chessPos* startingPosition);
-void findAllPossibleKnightPathsRec(chessPosList lst, treeNode* root);
-//void findAllPossibleKnightPathsRec(int** positions_history, treeNode* root);
-int deleteRepeatableCells(chessPosArray** Curr, chessPosList lst);
-//int deleteRepeatableCells(chessPosArray** Curr, int** positions_history);
+void findAllPossibleKnightPathsRec(bool*** positions_history, treeNode* root, chessPosArray*** Possible_moves);
+void deleteRepeatableCells(chessPosArray* Curr, bool** positions_history);
 treeNode* allocateNewTreeNode(treeNodeListCell** pTreeNode, char* position);
-// void insertTreeNodeDataToEndList(treeNode* res, chessPos value);
-// void insertTreeNodetoEndList(chessPosList* lst, treeNode* node);
 void printTree(pathTree tree);
 void printTreeRec(treeNode* root);
 

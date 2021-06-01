@@ -9,11 +9,11 @@
 
 //#define DEBUG_Q1
 //#define DEBUG_Q2
-#define DEBUG_Q3
+//#define DEBUG_Q3
 //#define DEBUG_Q4
 //#define DEBUG_Q5
 //#define DEBUG_Q6
-// #define MENU
+ #define MENU
 
 int main(int argc, char* argv[])
 {
@@ -59,9 +59,9 @@ int main(int argc, char* argv[])
     tree = findAllPossibleKnightPaths(&start);
     freePathTree(&tree);
     /*size-5x5*/
-    /*tableSize = 5;
+    *tableSize = 5;
     tree = findAllPossibleKnightPaths(&start);
-    freePathTree(&tree);*/
+    freePathTree(&tree);
 #endif // DEBUG_Q3
 
     /*Q4*/

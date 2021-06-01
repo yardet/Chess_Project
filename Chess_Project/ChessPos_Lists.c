@@ -80,6 +80,10 @@ chessPosArray*** validKnightMoves()
                     possiblePositionsArr[i][j]->size = countPossiblePositions;
                     countPossiblePositions = 0;
                 }
+                else
+                {
+                    exit(ALLOCATION_FAILURE);
+                }
             }
         }
     }
