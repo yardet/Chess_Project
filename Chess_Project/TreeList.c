@@ -63,7 +63,7 @@ void findAllPossibleKnightPathsRec(bool*** positions_history, treeNode* root, ch
     if (currPosition->size == 0)
     {
         root->next_possible_positions = NULL;
-        (*positions_history)[root->position[0] - 'A'][root->position[1] - '1'] = false;
+        (*positions_history)[root->position[0] - 'A'][root->position[1] - '1'] = false;/*Deleting the postion from the array*/
         return;
     }
     else
@@ -76,10 +76,10 @@ void findAllPossibleKnightPathsRec(bool*** positions_history, treeNode* root, ch
         treeNode* nextNode;
         for (i = 0; i < currPosition->size; i++)
         {
-            nextNode = allocateNewTreeNode(&res, currPosition->positions[i]);
+            nextNode = allocateNewTreeNode(&res, currPosition->positions[i]);/*Running on the NEXT POSITIONS values*/
             findAllPossibleKnightPathsRec(positions_history, nextNode, Possible_moves);
         }
-        (*positions_history)[root->position[0] - 'A'][root->position[1] - '1'] = false;
+        (*positions_history)[root->position[0] - 'A'][root->position[1] - '1'] = false;/*Deleting the postion from the array*/
         free(currPosition->positions);
         free(currPosition);
         return;
@@ -137,7 +137,8 @@ treeNode* allocateNewTreeNode(treeNodeListCell** pCurrNode, char* currPosition)
         treeNodeListCell* currNode = (*pCurrNode), * prevNode = currNode;
         while (currNode != NULL)
         {
-            prevNode = currNode;
+            prevNode = currNode;/*Retains the value at the end of the list until the curr = NULL,
+The prev will keep the value before the null*/
             currNode = currNode->next;
         }
         if (!currPosition)
@@ -179,7 +180,7 @@ treeNode* allocateNewTreeNode(treeNodeListCell** pCurrNode, char* currPosition)
     }
 }
 
-void printTree(pathTree tree)
+void printTree(pathTree tree)/*Test function- irrelevant to project requirements*/
 {
     treeNode* node = tree.root;
     if (node)
@@ -239,7 +240,7 @@ chessPosList* findKnightPathCoveringAllBoard(pathTree* path_tree)
 }
 chessPosList* findKnightPathCoveringAllBoardRec(chessPosList* lst, treeNode* root, int* possibleRouteIsFound, int* possibleRoutesCounter)
 {
-    if (*possibleRouteIsFound == 1)
+    if (*possibleRouteIsFound == 1)/*If a suitable path is found, the function returns the same path until the recursive functions are exited*/
     {
         return lst;
     }
@@ -268,7 +269,7 @@ chessPosList* findKnightPathCoveringAllBoardRec(chessPosList* lst, treeNode* roo
                 findKnightPathCoveringAllBoardRec(lst, prevNode->node, possibleRouteIsFound, possibleRoutesCounter);
                 if ((*possibleRouteIsFound) == 1)
                 {
-                    return lst;
+                    return lst;/*If a suitable path is found, the function returns the same path until the recursive functions are exited*/
                 }
                 else
                 {
@@ -279,14 +280,14 @@ chessPosList* findKnightPathCoveringAllBoardRec(chessPosList* lst, treeNode* roo
             }
             if ((*possibleRoutesCounter) == 1)
             {
-                deleteLastChessPosCellFromList(lst);
+                deleteLastChessPosCellFromList(lst);/*Erasing the root of the path */
                 return NULL;
             }
         }
     }
 }
 
-void printAllPossitionsRoutes(chessPosList* lst)
+void printAllPossitionsRoutes(chessPosList* lst)/*Test function- irrelevant to project requirements*/
 {
     chessPosCell* myNode = (*lst).head;
     while (myNode != NULL)

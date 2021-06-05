@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include<stdlib.h>
+#include <stdio.h>
 #include "Additional functions.h"
 #include <string.h>
 #include "ChessPos_Lists.h"

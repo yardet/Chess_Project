@@ -89,7 +89,7 @@ chessPosArray*** validKnightMoves()
     }
     return possiblePositionsArr;
 }
-void printValidMoves(chessPosArray*** valid_moves)
+void printValidMoves(chessPosArray*** valid_moves)/*Test function- irrelevant to project requirements*/
 {
     for (int i = STARTING_POSITION_ROW; i < STARTING_POSITION_ROW + TABLE_SIZE; i++)
     {
