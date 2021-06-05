@@ -141,14 +141,14 @@
   <ItemGroup>
     <ClCompile Include="Additional_functions.c" />
     <ClCompile Include="ChessPos_Lists.c" />
-    <ClCompile Include="Files.c" />
+    <ClCompile Include="Files_Bytes.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="TreeList.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Additional functions.h" />
     <ClInclude Include="ChessPos_Lists.h" />
-    <ClInclude Include="Files.h" />
+    <ClInclude Include="Files_Bytes.h" />
     <ClInclude Include="TreeList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

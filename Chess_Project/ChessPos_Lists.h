@@ -37,6 +37,12 @@ bool isEmptyList(chessPosList* lst);
 void freeBooleanMatrix(bool** arr, int rowSize);
 void printList(chessPosList* lst);
 void freeList(chessPosList* lst);
+void free_int_chess_array(int*** chess_array);
+int*** allocation_int_chess_array();
 
 // Q3, Q4
 void deleteLastChessPosCellFromList(chessPosList* lst);
+
+// Q6
+bool isValidPath(chessPosList lst);
+bool isPathCoveringAllBoard(chessPosList lst);

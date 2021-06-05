@@ -3,16 +3,16 @@
 #include "Additional functions.h"
 #include <string.h>
 #include "ChessPos_Lists.h"
-#include "Files.h"
+#include "Files_Bytes.h"
 #include "TreeList.h"
-#define NUM_OF_OPTIONS 5
+#define NUM_OF_OPTIONS 6
 #define FILE_LEN 20
 void checkAllocation(void* res)
 {
     if (!res)
     {
-        fprintf(stderr, "Allocation failure in \nExiting...\n");
-        exit(ALLOCATION_FAILURE);
+        fprintf(stderr, "Allocation failure... Exiting\nGood bye!\n");
+        exit(FAILURE);
     }
 }
 void menu()
@@ -23,8 +23,10 @@ void menu()
     FILE* fp;
     bool* operationArr = (bool*)malloc(sizeof(bool) * NUM_OF_OPTIONS);
     checkAllocation(operationArr);
-    char* file_name = (char*)malloc(sizeof(char) * FILE_LEN);
-    char* file_name_in= (char*)malloc(sizeof(char) * FILE_LEN);
+    char* fileNameQ5 = (char*)malloc(sizeof(char) * FILE_LEN);
+    checkAllocation(fileNameQ5);
+    char* fileNameQ6 = (char*)malloc(sizeof(char) * FILE_LEN);
+    checkAllocation(fileNameQ6);
     chessPos starting_position;
     starting_position[0] = 'A';/*For default*/
     starting_position[1] = '1';
@@ -40,10 +42,11 @@ void menu()
     scanf("%d", &Selection);
     while (Selection != 6)
     {
-        getchar();/*get the '\n'*/
+        getchar(); /*get the '\n'*/
         switch (Selection)
         {
         case 1:
+            operationArr[5] = false;
             if (operationArr[0])/*if we already chosen location and we want changing to another*/
             {
                 operationArr[0] = false;
@@ -68,11 +71,11 @@ void menu()
             positionIntegrityCheck(starting_position);
             operationArr[0] = true;
             break;
-        case 2:
+        case 2: // Q3
+            operationArr[5] = false;
             if (!operationArr[0])
             {
-                puts("Initial location not yet entered\n");
-                puts("Enter here:");
+                puts("Initial location has not been entered yet, enter here:");
                 scanf("%c%c", &starting_position[0], &starting_position[1]);
                 positionIntegrityCheck(starting_position);
                 operationArr[0] = true;/*Location selection*/
@@ -81,13 +84,16 @@ void menu()
             if (tree.root)
                 operationArr[1] = true;
             else
-                puts("error with the construction of the tree,try again\n");
+            {
+                puts("Error with the construction of the tree - try again\n");
+                system("PAUSE");
+            }
             break;
-        case 3:
+        case 3: // Q4
+            operationArr[5] = false;
             if (!operationArr[0])
             {
-                puts("Initial location not yet entered\n");
-                puts("Enter here:");
+                puts("Initial location has not been entered yet, enter here:");
                 scanf("%c%c", &starting_position[0], &starting_position[1]);
                 positionIntegrityCheck(starting_position);
                 operationArr[0] = true;
@@ -97,21 +103,25 @@ void menu()
             if (tree.root)
                 operationArr[1] = true;
             else
-                puts("error with the construction of the tree,try again\n");
+            {
+                puts("Error with the construction of the tree - try again\n");
+                system("PAUSE");
+            }
             pathCoverAllBoard = findKnightPathCoveringAllBoard(&tree);
             if (!pathCoverAllBoard)
             {
-                puts("There is no suitable route,Try choosing a different starting location\n");
+                puts("There is no suitable route, try choosing a different starting location\n");
+                system("PAUSE");
                 operationArr[2] = false;
             }
             else
                 operationArr[2] = true;
             break;
-        case 4:
+        case 4: // Q5
+            operationArr[5] = false;
             if (!operationArr[0])
             {
-                puts("Initial location not yet entered\n");
-                puts("Enter here:");
+                puts("Initial location has not been entered yet, enter here:");
                 scanf("%c%c", &starting_position[0], &starting_position[1]);
                 positionIntegrityCheck(starting_position);
                 operationArr[0] = true;
@@ -124,71 +134,99 @@ void menu()
                 else
                 {
                     operationArr[1] = false;
-                    puts("error with the construction of the tree,try again\n");
+                    puts("Error with the construction of the tree - try again");
+                    system("PAUSE");
                     break;
-                }       
+                }
             }
             if (!operationArr[2])
             {
                 pathCoverAllBoard = findKnightPathCoveringAllBoard(&tree);
                 if (!pathCoverAllBoard)
-                    puts("There is no suitable route,Try choosing a different starting location\n");
+                {
+                    puts("There is no suitable route, try choosing a different starting location");
+                    system("PAUSE");
+                    break;
+                }
                 else
                     operationArr[2] = true;
             }
-            puts("enter file name:");
-            scanf("%s", file_name);
-            saveListToBinFile(file_name, pathCoverAllBoard);
+            puts("Please enter file name:");
+            scanf("%s", fileNameQ5);
+            saveListToBinFile(fileNameQ5, pathCoverAllBoard);
             operationArr[3] = true;
             break;
-        case 5:
-            puts("enter file name:");
-            scanf("%s", file_name_in);
-            fp = fopen(file_name_in, "rb");
-            checkAllocation(fp);
-            chessPosList* pos_list= getCellsFromBinaryFile(fp);
-            display(pos_list);
+        case 5: // Q6
+            operationArr[5] = false;
+            puts("Please enter file name:");
+            scanf("%s", fileNameQ6);
+            int returningValue = checkAndDisplayPathFromFile(fileNameQ6);
+            if (returningValue == FAILURE)
+            {
+                puts("File not found");
+            }
+            else if (returningValue == 1)
+            {
+                puts("The path is not valid");
+            }
+            else if (returningValue == 2)
+            {
+                puts("The path is valid and it covers all board");
+            }
+            else
+            {
+                puts("The path is valid but it does not cover all board");
+            }
             operationArr[4] = true;
-            fclose(fp);
-            system("PASUE");/*waiting for 'enter'(Just to see the print before the screen is cleared) */
+            system("PAUSE"); /*waiting for 'enter' (just to see the print before the screen is cleared) */
             break;
         default:
             system("cls");
-            puts("Error,Please select a valid number\n");
+            operationArr[5] = true;
+            break;
         }
         system("cls");
         printMenu(operationArr);/*print the menu again*/
+        //fflush(&Selection);
         scanf("%d", &Selection);
     }
-    if (tree.root)
+    if (tree.root && operationArr[1])
         freePathTree(&tree);
-    if (pathCoverAllBoard)
+    if (pathCoverAllBoard && operationArr[2])
         freeList(pathCoverAllBoard);
     system("cls");
-    puts("Thanks you!\n");
+    puts("Thank you!\n");
     free(operationArr);
     exit(-1);
 }
 void positionIntegrityCheck(chessPos position)
 {
-    while ((position[0] < 'A' || position[0] > TABLE_SIZE + 'A') ||( position[1]-'0' < 1 || position[1]-'0' > TABLE_SIZE))
+    while ((position[0] < 'A' || position[0] > TABLE_SIZE + 'A') || (position[1] - '0' < 1 || position[1] - '0' > TABLE_SIZE))
     {
-        puts("Error,Please select a valid position:");
-        printf("Enter here:");
+
+        puts("Error, please select a valid position - enter here:");
+        fseek(stdin, 0, SEEK_END);/*clear the scanf*/
         scanf("%c%c", &position[0], &position[1]);
     }
 }
 void printMenu(bool* operationArr)
 {
-    for (int i = 0; i < NUM_OF_OPTIONS; i++)
+    for (int i = 0; i < NUM_OF_OPTIONS - 1; i++)
     {
         if (operationArr[i])
-            printf("%d-DONE!\n", i + 1);
+        {
+            printf("Clause %d - DONE!\n", (i + 1));
+        }
     }
-    puts("1. Enter a knight's starting postion\n ");
-    puts("2. Create all possible knight paths\n");
-    puts("3. Find a knight path covering all borad\n");
-    puts("4. Save knight path covering all board to file\n");
-    puts("5. Load and display path from file\n");
-    puts("6. Exit\n");
+    if (operationArr[NUM_OF_OPTIONS - 1])
+    {
+        puts("Error - please select a valid number\n");
+        fseek(stdin, 0, SEEK_END);/*clear the scanf*/
+    }
+    puts("1. Enter a knight's starting postion");
+    puts("2. Create all possible knight paths");
+    puts("3. Find a knight path covering all board");
+    puts("4. Save knight path covering all board to file");
+    puts("5. Load and display path from file");
+    puts("6. Exit");
 }

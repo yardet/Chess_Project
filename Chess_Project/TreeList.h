@@ -20,7 +20,7 @@ void printTreeRec(treeNode* root);
 
 // Q4
 chessPosList* findKnightPathCoveringAllBoard(pathTree* path_tree);
-chessPosList* findKnightPathCoveringAllBoardRec(chessPosList* lst, treeNode* root,int* stop, int* possibleRoutesCounter);
+chessPosList* findKnightPathCoveringAllBoardRec(chessPosList* lst, treeNode* root, int* stop, int* possibleRoutesCounter);
 void printAllPossitionsRoutes(chessPosList* lst);
 
 // Not used

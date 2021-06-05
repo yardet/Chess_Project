@@ -5,20 +5,21 @@
 #include "ChessPos_Lists.h"
 #include "TreeList.h"
 #include "Additional functions.h"
-#include "Files.h"
+#include "Files_Bytes.h"
 
+/*When MENU is running it will display the menu from section 7 (which goes over all the functions needed for the project), the rest of the DEBUG will go through a section which contains test and print functions that were not necessarily necessary*/
 //#define DEBUG_Q1
 //#define DEBUG_Q2
 //#define DEBUG_Q3
 //#define DEBUG_Q4
 //#define DEBUG_Q5
 //#define DEBUG_Q6
- #define MENU
+#define MENU
 
 int main(int argc, char* argv[])
 {
     int* tableSize, * initialRowPosition, * initialColPosition; // initial is the same meaning as starting
-    tableSize = (int*)&TABLE_SIZE;
+    tableSize = (int*)&TABLE_SIZE;/*accsess to const int*/
     initialRowPosition = (int*)&STARTING_POSITION_ROW;
     initialColPosition = (int*)&STARTING_POSITION_ROW;
 
@@ -36,7 +37,6 @@ int main(int argc, char* argv[])
     chessPos start;
     start[0] = 'A';
     start[1] = '1';
-    getTableBoundaries(start, initialRowPosition, initialColPosition);
     chessPosArray*** valid_moves = validKnightMoves();
     printValidMoves(valid_moves);
     freeValidMoves(valid_moves);
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
     /*Q5*/
 #ifdef DEBUG_Q5
     int i = NULL;
-    chessPosCell node5 = { {'E', '3'},NULL};
+    chessPosCell node5 = { {'E', '3'},NULL };
     chessPosCell node4 = { {'D', '1'}, &node5 };
     chessPosCell node3 = { {'B', '3'}, &node4 };
     chessPosCell node2 = { {'A', '4'}, &node3 };
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
     FILE* fp;
     fp = fopen(str, "rb");
     checkAllocation(fp);
-    chessPosList* pos_list=getCellsFromBinaryFile(fp);
+    chessPosList* pos_list = getCellsFromBinaryFile(fp);
     display(pos_list);
     fclose(fp);
 #endif // DEBUG_Q6

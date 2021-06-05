@@ -27,7 +27,7 @@
     <ClCompile Include="Additional_functions.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Files.c">
+    <ClCompile Include="Files_Bytes.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClInclude Include="Additional functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Files.h">
+    <ClInclude Include="Files_Bytes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

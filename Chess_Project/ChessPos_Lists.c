@@ -20,37 +20,37 @@ chessPosArray*** validKnightMoves()
             checkAllocation(possiblePositionsArr[i]);
             for (j = initialRow; j < initialRow + TABLE_SIZE; j++)
             {
-                possiblePositionsArr[i][j] = (chessPosArray*)malloc(sizeof(chessPosArray)); 
+                possiblePositionsArr[i][j] = (chessPosArray*)malloc(sizeof(chessPosArray));
                 checkAllocation(possiblePositionsArr[i][j]);
                 possiblePositionsArr[i][j]->positions = (chessPos*)malloc(sizeof(chessPos) * (CHESS_ARRAY_SIZE));
                 checkAllocation(possiblePositionsArr[i][j]->positions);
                 if ((j + 1) < TABLE_SIZE + initialRow && (i - 2) >= initialRow) /*one right and two up*/
-                {                    
+                {
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i - 2) + 'A';
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][1] = (j + 1) + 1 + '0';
                     countPossiblePositions++;
                 }
                 if (j + 2 < TABLE_SIZE + initialRow && i - 1 >= initialRow) /*two right and one up*/
-                {                    
+                {
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i - 1) + 'A';
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][1] = (j + 2) + 1 + '0';
                     countPossiblePositions++;
                 }
                 if (j + 2 < TABLE_SIZE + initialRow && i + 1 < TABLE_SIZE + initialRow) /*two right and one down*/
-                {                    
+                {
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i + 1) + 'A';
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][1] = (j + 2) + 1 + '0';
                     countPossiblePositions++;
                 }
                 if (j + 1 < TABLE_SIZE + initialRow && i + 2 < TABLE_SIZE + initialRow) /*one right and two down*/
-                {                    
+                {
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i + 2) + 'A';
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][1] = (j + 1) + 1 + '0';
                     countPossiblePositions++;
                 }
                 if (j - 1 >= initialRow && i + 2 < TABLE_SIZE + initialRow) /*one left and two down*/
                 {
-                    
+
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][0] = (i + 2) + 'A';
                     possiblePositionsArr[i][j]->positions[countPossiblePositions][1] = (j - 1) + 1 + '0';
                     countPossiblePositions++;
@@ -82,7 +82,7 @@ chessPosArray*** validKnightMoves()
                 }
                 else
                 {
-                    exit(ALLOCATION_FAILURE);
+                    exit(FAILURE);
                 }
             }
         }
@@ -102,7 +102,7 @@ void printValidMoves(chessPosArray*** valid_moves)
             }
             puts("\n");
         }
-        puts("\n");
+        puts("NULL");
     }
 }
 void freeValidMoves(chessPosArray*** valid_moves)
@@ -120,7 +120,6 @@ void freeValidMoves(chessPosArray*** valid_moves)
 }
 
 //Q2
-
 chessPosList getExampleChessPosList()
 {
     /*Example as shown in instructions*/
@@ -297,37 +296,75 @@ void freeBooleanMatrix(bool** arr, int rowSize)
     free(arr);
 }
 
-void printList(chessPosList* lst)
+void printList(chessPosList* lst)/*print the list*/
 {
     chessPosCell* node = lst->head;
     int i, j, count = 1;
-    char chessArray[CHESS_ARRAY_SIZE][CHESS_ARRAY_SIZE][1];
+    int*** chessArray = allocation_int_chess_array();
     while (node != NULL)
     {
-        chessArray[(int)node->position[0] - 65][(int)node->position[1] - 49][0] = count + '0';
-        printf("%c%c ", node->position[0], node->position[1]);
+        chessArray[node->position[0] - 'A'][node->position[1] - '1'][0] = count;
+        printf("%c%c->", node->position[0], node->position[1]);
         count++;
         node = node->next;
 
     }
-    puts("\n");
-    printf("    1 2 3 4 5 6 7 8  \n");
-    for (i = 0; i < CHESS_ARRAY_SIZE; i++)
+    puts("NULL\n");
+    printf("%*c", 2, ' ');
+    for (i = 0; i < TABLE_SIZE; i++)
+    {
+        printf("%*d", 3, i + 1);
+    }
+    printf("\n");
+    for (i = 0; i < TABLE_SIZE; i++)
     {
         printf("%c->", i + 'A');
-        for (j = 0; j < CHESS_ARRAY_SIZE; j++)
+        for (j = 0; j < TABLE_SIZE; j++)
         {
-            if (chessArray[i][j][0] > 1 && chessArray[i][j][0] <= 64)
-                printf("|%c", chessArray[i][j][0]);
+            if (chessArray[i][j][0] >= 1 && chessArray[i][j][0] <= TABLE_SIZE * TABLE_SIZE)
+            {
+                if (chessArray[i][j][0] >= 10)
+                    printf("|%*d", 2, chessArray[i][j][0]);
+                else
+                    printf("|%d ", chessArray[i][j][0]);
+            }
             else
-                printf("| ");
+                printf("|  ");
         }
         printf("|");
         puts("\n");
     }
     puts("--------------------\n");
+    free_int_chess_array(chessArray);
 }
-
+int*** allocation_int_chess_array()
+{
+    int*** chessArray = (int***)malloc(sizeof(int**) * TABLE_SIZE);
+    checkAllocation(chessArray);
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        chessArray[i] = (int**)malloc(sizeof(int*) * TABLE_SIZE);
+        checkAllocation(chessArray[i]);
+        for (int j = 0; j < TABLE_SIZE; j++)
+        {
+            chessArray[i][j] = (int*)malloc(sizeof(int));
+            checkAllocation(chessArray[i][j]);
+        }
+    }
+    return chessArray;
+}
+void free_int_chess_array(int*** chess_array)
+{
+    for (int i = 0; i < TABLE_SIZE; i++)
+    {
+        for (int j = 0; j < TABLE_SIZE; j++)
+        {
+            free(chess_array[i][j]);
+        }
+        free(chess_array[i]);
+    }
+    free(chess_array);
+}
 void freeList(chessPosList* lst)
 {
     chessPosCell* currNode = lst->head, * nextNode;
@@ -341,6 +378,7 @@ void freeList(chessPosList* lst)
     lst->tail = NULL;
 }
 
+// Q3, Q4
 void deleteLastChessPosCellFromList(chessPosList* lst)
 {
     chessPosCell* currNode = lst->head, * prevNode = currNode;
@@ -352,4 +390,108 @@ void deleteLastChessPosCellFromList(chessPosList* lst)
     free(currNode);
     prevNode->next = NULL;
     lst->tail = prevNode;
+}
+
+// Q6
+bool isValidPath(chessPosList lst)
+{
+    chessPosCell* currNode = lst.head, * nextNode = currNode->next;
+    while (nextNode != NULL)
+    {
+        // Row cases
+        if (currNode->position[0] == 'A' && (nextNode->position[0] != 'B' && nextNode->position[0] != 'C'))
+        {
+            return false;
+        }
+        else if (currNode->position[0] == 'B' && (nextNode->position[0] != 'A' && nextNode->position[0] != 'C' && nextNode->position[0] != 'D'))
+        {
+            return false;
+        }
+        else if (currNode->position[0] == 'C' && (nextNode->position[0] != 'A' && nextNode->position[0] != 'B' && nextNode->position[0] != 'D' && nextNode->position[0] != 'E'))
+        {
+            return false;
+        }
+        else if (currNode->position[0] == 'D' && (nextNode->position[0] != 'B' && nextNode->position[0] != 'C' && nextNode->position[0] != 'E' && nextNode->position[0] != 'F'))
+        {
+            return false;
+        }
+        else if (currNode->position[0] == 'E' && (nextNode->position[0] != 'C' && nextNode->position[0] != 'D' && nextNode->position[0] != 'F' && nextNode->position[0] != 'G'))
+        {
+            return false;
+        }
+        else if (currNode->position[0] == 'F' && (nextNode->position[0] != 'D' && nextNode->position[0] != 'E' && nextNode->position[0] != 'G' && nextNode->position[0] != 'H'))
+        {
+            return false;
+        }
+        else if (currNode->position[0] == 'G' && (nextNode->position[0] != 'E' && nextNode->position[0] != 'F' && nextNode->position[0] != 'H'))
+        {
+            return false;
+        }
+        else if (currNode->position[0] == 'H' && (nextNode->position[0] != 'F' && nextNode->position[0] != 'G'))
+        {
+            return false;
+        }
+        // Column cases
+        if (currNode->position[1] == '1' && (nextNode->position[1] != '2' && nextNode->position[1] != '3'))
+        {
+            return false;
+        }
+        else if (currNode->position[1] == '2' && (nextNode->position[1] != '1' && nextNode->position[1] != '3' && nextNode->position[1] != '4'))
+        {
+            return false;
+        }
+        else if (currNode->position[1] == '3' && (nextNode->position[1] != '1' && nextNode->position[1] != '2' && nextNode->position[1] != '4' && nextNode->position[1] != '5'))
+        {
+            return false;
+        }
+        else if (currNode->position[1] == '4' && (nextNode->position[1] != '2' && nextNode->position[1] != '3' && nextNode->position[1] != '5' && nextNode->position[1] != '6'))
+        {
+            return false;
+        }
+        else if (currNode->position[1] == '5' && (nextNode->position[1] != '3' && nextNode->position[1] != '4' && nextNode->position[1] != '6' && nextNode->position[1] != '7'))
+        {
+            return false;
+        }
+        else if (currNode->position[1] == '6' && (nextNode->position[1] != '4' && nextNode->position[1] != '5' && nextNode->position[1] != '7' && nextNode->position[1] != '8'))
+        {
+            return false;
+        }
+        else if (currNode->position[1] == '7' && (nextNode->position[1] != '5' && nextNode->position[1] != '6' && nextNode->position[1] != '8'))
+        {
+            return false;
+        }
+        else if (currNode->position[1] == '8' && (nextNode->position[1] != '6' && nextNode->position[1] != '7'))
+        {
+            return false;
+        }
+
+        currNode = nextNode;
+        nextNode = nextNode->next;
+    }
+    return true;
+}
+
+bool isPathCoveringAllBoard(chessPosList lst)
+{
+    chessPosCell* currNode = lst.head;
+    bool** allAppearingCellsInBoard = getBooleanMatrix(TABLE_SIZE, TABLE_SIZE);
+    while (currNode != NULL)
+    {
+        allAppearingCellsInBoard[currNode->position[0] - 'A'][currNode->position[1] - '1'] = true;
+        currNode = currNode->next;
+    }
+    int i, j;
+    for (i = 0; i < TABLE_SIZE; i++)
+    {
+        for (j = 0; j < TABLE_SIZE; j++)
+        {
+            if (allAppearingCellsInBoard[i][j] == false)
+            {
+                freeBooleanMatrix(allAppearingCellsInBoard, TABLE_SIZE);
+                return false;
+            }
+        }
+    }
+    freeBooleanMatrix(allAppearingCellsInBoard, TABLE_SIZE);
+    return true;
 }
